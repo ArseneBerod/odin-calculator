@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	margin: 0;
+	background-color: #241B1A;
+}
+
+.calculator {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	background-color: #1a2324;
+	border-radius: 20px;
+	padding: 10px 25px 25px;
+}
+
+.calculator .display {
+	font-family: Roboto, sans-serif;
+	color: #FFFFFF;
+	font-size: 38px;
+	min-height: 10px;
+	text-align: right;
+}
+
+
+.keyboard {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.keyboard .row {
+	display: flex;
+	flex: 1;
+	gap: 2px;
+}
+
+.keyboard .row button {
+	flex: 1;
+	min-width: 100px;
+	min-height: 50px;
+}
+
+button {
+	border:none;
+	font-family: Roboto, sans-serif;
+	background-color: #353131;
+	color: #FFFFFF;
+}
+
+button:hover {
+	background-color: #373e3f;
+}
+
+button.digit {
+	background-color: #373e3f;
+}
+
+button.digit:hover {
+	background-color: #353131;
+}
+
+button.equal {
+	background-color: #0077FF;
+}
+
+
+button.equal:hover {
+	background-color: #47b1e9;
+}

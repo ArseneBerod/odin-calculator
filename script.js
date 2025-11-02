@@ -1,3 +1,4 @@
+const NB_DIGIT = 12;
 let operation = {
 	rhs: null,
 	lhs: null,
@@ -27,6 +28,14 @@ function divide(lhs, rhs) {
 	return lhs / rhs;
 }
 
+function formatNumber(num) {
+	if (Number.isInteger(num)) {
+		return num.toString();
+	} else {
+		return num.toFixed(NB_DIGIT);
+	}
+}
+
 function operate(operation) {
 	console.log(operation);
 	const rhs = Number(operation.rhs);
@@ -47,7 +56,7 @@ function operate(operation) {
 		default:
 			return "ERROR: Unknown operator";
 	}
-	updateDisplay(operation.rhs);
+	updateDisplay(formatNumber(operation.rhs));
 	operation.lhs = null;
 	operation.operator = null;
 	console.log(operation);
@@ -104,5 +113,5 @@ clearButton.addEventListener("click", () => {
 		rhs: null,
 		operator: null,
 	}
-	updateDisplay("");
+	updateDisplay("0");
 })
