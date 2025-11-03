@@ -3,8 +3,15 @@ let operation = {
 	rhs: null,
 	lhs: null,
 	operator: null,
+	isDone: false,
 };
 
+function reset(operation) {
+	operation.rhs = null;
+	operation.lhs = null;
+	operation.operator = null;
+	operation.isDone = false;
+}
 function isValid(operation) {
 	return operation.rsh !== null && operation.lhs !== null && operation.operator !== null;
 }
@@ -32,43 +39,44 @@ function formatNumber(num) {
 	if (Number.isInteger(num)) {
 		return num.toString();
 	} else {
-		return num.toFixed(NB_DIGIT);
+		return num.toPrecision(NB_DIGIT);
 	}
 }
 
 function operate(operation) {
-	console.log(operation);
 	const rhs = Number(operation.rhs);
 	const lhs = Number(operation.lhs);
 	switch (operation.operator) {
 		case "+":
-			operation.rhs = add(rhs, lhs);
-			break;
+			return add(rhs, lhs);
 		case "-":
-			operation.rhs = substract(rhs, lhs);
-			break;
+			return substract(rhs, lhs);
 		case "x":
-			operation.rhs = multiply(rhs, lhs);
-			break;
+			return multiply(rhs, lhs);
 		case "/":
-			operation.rhs = divide(rhs, lhs);
-			break;
+			return divide(rhs, lhs);
 		default:
 			return "ERROR: Unknown operator";
 	}
-	updateDisplay(formatNumber(operation.rhs));
-	operation.lhs = null;
-	operation.operator = null;
-	console.log(operation);
 }
+
 function updateDisplay(value) {
 	const displayElement = document.querySelector(".display");
-	displayElement.textContent = value;
+	if (typeof value === "number") {
+		displayElement.textContent = formatNumber(value);
+	} else {
+		displayElement.textContent = value;
+	}
 }
 
 let digitButtons = document.querySelectorAll("button.digit");
 for (const button of Array.from(digitButtons)) {
 	button.addEventListener("click", event => {
+
+		if(operation.isDone) {
+			reset(operation);
+		}
+
 		if (operation.operator === null) {
 			if (operation.rhs === null) {
 				operation.rhs = event.target.textContent;
@@ -90,28 +98,31 @@ for (const button of Array.from(digitButtons)) {
 let operatorButtons = document.querySelectorAll("button.operator");
 for (const button of Array.from(operatorButtons)) {
 	button.addEventListener("click", event => {
-		if (operation.rhs !== null) {
-			if (operation.lhs !== null) {
-				operate(operation);
+		if (operation.isDone) {
+			operation.lhs = null;
+			operation.isDone = false;
+		} else {
+			if (isValid(operation)) {
+					operation.rhs = operate(operation);
+					operation.lhs = null;
+					updateDisplay(operation.rhs);
 			}
-			operation.operator = event.target.textContent;
 		}
+		operation.operator = event.target.textContent;
 	})
 }
 
 let equalButton = document.querySelector("button.equal");
 equalButton.addEventListener("click", () => {
 	if (isValid(operation)) {
-		operate(operation)
+		operation.rhs = operate(operation);
+		operation.isDone = true;
+		updateDisplay(operation.rhs);
 	}
 })
 
 const clearButton = document.querySelector("button.clear");
 clearButton.addEventListener("click", () => {
-	operation = {
-		lhs: null,
-		rhs: null,
-		operator: null,
-	}
+	reset(operation);
 	updateDisplay("0");
 })
